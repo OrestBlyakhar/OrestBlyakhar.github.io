@@ -1,10 +1,9 @@
 import { createBrowserRouter } from "react-router-dom";
 import { AppRoutes } from "./AppRoutes.jsx";
-import React from "react";
-import MainPage from "../components/MainPage.jsx";
-import UserPage from "../components/UserPage.jsx";
-import LoginPage from "../components/LoginPage.jsx";
-import ErrorPage from "../components/ErrorPage.jsx";
+import MainPage from "../pages/MainPage.jsx";
+import UserPage from "../pages/UserPage.jsx";
+import LoginPage from "../pages/LoginPage.jsx";
+import ErrorPage from "../pages/ErrorPage.jsx";
 
 export const router = createBrowserRouter([
     {

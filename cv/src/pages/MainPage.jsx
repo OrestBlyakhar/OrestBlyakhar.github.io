@@ -1,11 +1,12 @@
+import styles from "./MainPage.module.scss"
 const MainPage = () => {
     return (
-        <div>
-            <div>
+        <div className={styles.wrapper}>
+            <div className={styles.container}>
                 <div>
                     <div>
                         <div>
-                            <img src="https://static.vecteezy.com/system/resources/previews/002/275/847/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg" alt="1" />
+                            <img className={styles.img} src="https://static.vecteezy.com/system/resources/previews/002/275/847/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg" alt="1" />
                         </div>
                     </div>
                     <div>

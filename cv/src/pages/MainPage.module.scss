@@ -1,0 +1,22 @@
+.wrapper {
+    width: 100%;
+    font-family: sans-serif;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.container{
+    width: 80%;
+    margin: auto;
+    display: grid;
+    padding: 40px;
+    background: #767632;
+    grid-template-columns: 1fr 1fr;
+    border-radius:20px;
+}
+
+  .img{
+    max-width: 300px;
+    max-height: 350px;
+    border-radius: 15px;
+  }
