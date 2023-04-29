@@ -23,25 +23,65 @@
   color: white;
   border-top-left-radius: 15px;
   border-bottom-left-radius: 15px;
+  text-align: start;
 }
 
 .rightSide{
-  width: 70%;
+  width: 60%;
+  padding-left: 20px;
   display: flex;
   flex-flow: column wrap;
   background-color: white;
+  color: rgb(72, 72, 72);
   border-top-right-radius: 15px;
   border-bottom-right-radius: 15px;
 }
 
 .img{
   width: 100%;
-  max-height: 350px;
+  max-height: 300px;
   border-top-left-radius: 15px;
 }
 
 .firstLastName{
-  font-weight: 200;
+  font-weight: 500;
   font-size: 30px;
-  display: block;
+  text-align: center;
+}
+
+.profession{
+  font-size: 20px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.titles{
+  height: 25px;
+  font-size: 20px;
+  text-transform: uppercase;
+  font-weight: 100;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-top: 3px;
+  padding-left: 15px;
+  background-color: #2681a2;
+}
+
+.divInfo{
+  padding-left: 25px;
+}
+
+.titlesRight{
+  font-size: 30px;
+  color: #309dc4;
+}
+
+.divInfoRight{
+  font-size: 18px;
+  list-style: none;
+  line-height: 28px;
+}
+
+.description{
+  padding-left: 40px;
 }
