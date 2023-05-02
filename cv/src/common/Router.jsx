@@ -9,20 +9,18 @@ export const router = createBrowserRouter([
     {
         path: AppRoutes.MAIN,
         element: <MainPage/>,
-        errorElement: <ErrorPage/>,
-        children: [
-            {
-                path: AppRoutes.LOGIN,
-                element: <LoginPage/>
-            },
-            {
-                path: AppRoutes.USER,
-                element: <UserPage/>
-            },
-            {
-                path: AppRoutes.ERROR,
-                element: <ErrorPage/>
-            }
-        ]
+        errorElement: <ErrorPage/>
     },
+    {
+        path: AppRoutes.LOGIN,
+        element: <LoginPage/>
+    },
+    {
+        path: AppRoutes.USER,
+        element: <UserPage/>
+    },
+    {
+        path: AppRoutes.ERROR,
+        element: <ErrorPage/>
+    }
 ]);

@@ -85,3 +85,18 @@
 .description{
   padding-left: 40px;
 }
+
+.btnLogin{
+  width: 90px;
+  height: 40px;
+  border: #2681a2 solid;
+  border-radius: 15px;
+  background-color: white;
+  cursor: pointer;
+  position: fixed;
+}
+
+.btnDiv{
+  display: flex;
+  justify-content: flex-end;
+}

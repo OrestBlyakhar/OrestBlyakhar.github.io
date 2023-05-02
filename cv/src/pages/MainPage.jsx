@@ -1,4 +1,5 @@
 import styles from "./MainPage.module.scss"
+import { ButtonLogin } from "../components/RouteHOC";
 const MainPage = () => {
     return (
         <div className={styles.wrapper}>
@@ -44,6 +45,7 @@ const MainPage = () => {
                     </div>
                 </div>
                 <div className={styles.rightSide}>
+                    <ButtonLogin/>
                     <div className={styles.divInfoRight}>
                         <h2 className={styles.titlesRight}>Description</h2>
                         <p className={styles.description}>I'm Orest, 16 years old, I am purposeful, responsible, attentive, ready to learn new things,
@@ -59,10 +61,6 @@ const MainPage = () => {
                                 <li>September 2022 - May 2023:</li>
                                 <li>Frontend developer - Logos</li>
                             </ul>
-                            {/* <p>September 2012 - today:</p>
-                            <p>Lyceum №74 named after Mariyka Pidhiryanka</p>
-                            <p>September 2022 - May 2023:</p>
-                            <p>Frontend developer - Logos</p> */}
                         </div>
                     </div>
                     <div className={styles.divInfoRight}>
