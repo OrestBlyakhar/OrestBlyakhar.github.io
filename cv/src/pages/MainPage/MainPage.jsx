@@ -1,5 +1,5 @@
 import styles from "./MainPage.module.scss"
-import { ButtonLogin } from "../components/RouteHOC";
+import { ButtonLogin } from "../../components/RouteHOC";
 const MainPage = () => {
     return (
         <div className={styles.wrapper}>
