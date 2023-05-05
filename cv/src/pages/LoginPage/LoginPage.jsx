@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Button, ButtonToolbar, Schema } from 'rsuite';
-import style from "./LoginPage.module.scss"
+import style from "./LoginPage.module.scss";
 
 const TextField = (props) => {
     const {name, accepter, placeholder, ...rest} = props;
@@ -19,7 +19,8 @@ const model = Schema.Model({
 
     password: StringType()
         .isRequired('This field is required.')
-        .minLength(6, 'Minimum 6 characters required'),
+        .minLength(6, 'Minimum 6 characters required')
+        .containsUppercaseLetter('Must contain at least one uppercase English character'),
 });
 
 const Login = ({handleLogin}) => {

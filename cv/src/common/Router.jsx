@@ -4,6 +4,8 @@ import MainPage from "../pages/MainPage/MainPage.jsx";
 import UserPage from "../pages/UserPage/UserPage.jsx";
 import LoginPage from "../pages/LoginPage/LoginPage.jsx";
 import ErrorPage from "../pages/ErrorPage/ErrorPage.jsx";
+import LoginHOC from "../components/LoginHOC.js";
+import { PrivateRouteForHOC, PublicRouteForHOC } from "../components/RouteHOC.js";
 
 export const router = createBrowserRouter([
     {
@@ -13,7 +15,7 @@ export const router = createBrowserRouter([
     },
     {
         path: AppRoutes.LOGIN,
-        element: <LoginPage/>
+        element: <PublicRouteForHOC HOC={LoginHOC} Component={LoginPage}/>
     },
     {
         path: AppRoutes.USER,
