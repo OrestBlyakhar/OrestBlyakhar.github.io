@@ -6,15 +6,15 @@ import error from "../pages/ErrorPage/ErrorPage.module.scss"
 export const PublicRouteForHOC = ({HOC, Component}) => {
     const authUser = JSON.parse(localStorage.getItem('authUser'))
     console.log(authUser);
-    return authUser?.id
-    ? <Navigate to={`/user/${authUser?.id}`}/>
+    return authUser?.uid
+    ? <Navigate to={`/user/${authUser?.uid}`}/>
     : <HOC Component={Component}/>
 }
 
 export const PrivateRouteForHOC = ({HOC, Component}) => {
     const authUser = JSON.parse(localStorage.getItem('authUser'))
     console.log(authUser);
-    return authUser?.id
+    return authUser?.uid
     ? <HOC Component={Component}/>
     : <Navigate to={AppRoutes.LOGIN}/>
 }
@@ -25,8 +25,4 @@ export const ButtonLogin = () => {
 
 export const ButtonHome = () => {
     return <Link to={AppRoutes.MAIN}><button className={error.btnHome}>home</button></Link>
-}
-
-export const ButtonEdit = () => {
-    return 
 }

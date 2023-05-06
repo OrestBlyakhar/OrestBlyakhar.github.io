@@ -1,6 +1,20 @@
-import styles from "../MainPage/MainPage.module.scss"
-import { ButtonEdit } from "../../components/RouteHOC";
+import styles from "../MainPage/MainPage.module.scss";
+import {AppRoutes} from "../../common/AppRoutes";
+import {signOut} from 'firebase/auth';
+import {auth} from "../../firebase";
+import {useNavigate} from "react-router-dom";
+
 const UserPage = () => {
+    const navigate = useNavigate()
+    const HandleSignOut = async () => {
+        try {
+            await signOut(auth);
+            localStorage.removeItem('authUser')
+            navigate(AppRoutes.MAIN)
+        } catch (e) {
+            console.log(e);
+        }
+    }
     return (
         <div className={styles.wrapper}>
             <div className={styles.main}>
@@ -45,7 +59,7 @@ const UserPage = () => {
                     </div>
                 </div>
                 <div className={styles.rightSide}>
-                    <ButtonEdit/>
+                    <button className={styles.btnLogOut} onClick={HandleSignOut}>Log out</button>
                     <div className={styles.divInfoRight}>
                         <h2 className={styles.titlesRight}>Description</h2>
                         <p className={styles.description}>I'm Orest, 16 years old, I am purposeful, responsible, attentive, ready to learn new things,

@@ -1,16 +1,17 @@
-import {onAuthStateChanged, signInWithEmailAndPassword} from 'firebase/auth'
+import {onAuthStateChanged, signInWithEmailAndPassword} from 'firebase/auth';
 import {auth} from "../firebase";
 import {useNavigate} from "react-router-dom";
-import {AppRoutes} from "../common/AppRoutes";
 
 const LoginHOC = ({Component}) => {
     onAuthStateChanged(auth, (currentUser)=>console.log(currentUser));
     const navigate = useNavigate()
-     const handleLogin = async (formValue)=>{
+    const handleLogin = async (formValue)=>{
         try {
             const response = await signInWithEmailAndPassword(auth, formValue.email, formValue.password );
-            console.log(response);
-            response?.user?.uid && navigate(AppRoutes.USER);
+            if(response?.user?.uid) {
+                localStorage.setItem('authUser', JSON.stringify(response.user))
+                navigate(`/user/${response?.user?.uid}`)
+            }
         }
         catch (e){
 
@@ -19,4 +20,4 @@ const LoginHOC = ({Component}) => {
     return <Component handleLogin={handleLogin}/>
 }
 
-export default LoginHOC;
+export default LoginHOC

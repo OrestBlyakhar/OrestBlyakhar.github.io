@@ -34,7 +34,6 @@ const Login = ({handleLogin}) => {
         if (!formRef.current.check()) {
             return;
         }
-        console.log('onSubmit', formValue);
         handleLogin(formValue);
     };
 

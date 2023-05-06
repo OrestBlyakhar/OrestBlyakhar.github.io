@@ -19,7 +19,7 @@ export const router = createBrowserRouter([
     },
     {
         path: AppRoutes.USER,
-        element: <UserPage/>
+        element: <PrivateRouteForHOC HOC={LoginHOC} Component={UserPage}/>
     },
     {
         path: AppRoutes.ERROR,
