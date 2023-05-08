@@ -1,8 +1,60 @@
 import styles from "../MainPage/MainPage.module.scss";
-import {AppRoutes} from "../../common/AppRoutes";
-import {signOut} from 'firebase/auth';
+import {Link} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { AppRoutes } from "../../common/AppRoutes";
 import {auth} from "../../firebase";
-import {useNavigate} from "react-router-dom";
+import { signOut } from "firebase/auth";
+
+export const mockData = {
+    generalInfo: {
+        fullName: 'Orest Bliakhar',
+        position: 'Frontend Developer',
+        description: 'I`m Orest, 16 years old, I am purposeful, responsible, attentive, ready to learn new things, want to work as a Front-end developer and develop myself in this direction',
+        imageUrl: 'https://static.vecteezy.com/system/resources/previews/002/275/847/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg',
+        imageName: '1',
+    },
+    personalInfo: {
+        residence: 'Rudno, Lviv 79493',
+        phoneNumber: '+380685161907',
+        birthDate: '29-12-2006',
+        email: 'blyakhar76@gmail.com'
+    },
+    languages: [
+        {
+            name: 'Ukrainian',
+            level: 'native speaker'
+        },
+        {
+            name: 'English',
+            level: 'Intermediate'
+        }
+    ],
+    skills: [
+        'HTML5', 'CSS', 'SCSS', 'JavaScript', 'React', 'Git'
+    ],
+    experience: [
+        'No work experience'
+    ],
+    education: [
+        {
+            years: 'September 2012 - today:',
+            name: 'Lyceum №74 named after Mariyka Pidhiryanka'
+        },
+        {
+            years: 'September 2022 - May 2023:',
+            name: 'Frontend developer - Logos'
+        }
+    ],
+    interests: [
+        'Footbal', 'Computer games', 'Basketball', 'Sport'
+    ],
+    contacts: {
+        instagram: 'Instagram: orest_blyakhar',
+        github: 'https://github.com/OrestBlyakhar',
+        discord: 'Discord: Невротик#3664',
+        tiktok: 'https://www.tiktok.com/@xorestx'
+    },
+}
 
 const UserPage = () => {
     const navigate = useNavigate()
@@ -36,7 +88,7 @@ const UserPage = () => {
                     <div>
                         <h3 className={styles.titles}>Skills</h3>
                         <ul>
-                            <li>HTML</li>
+                            <li>HTML5</li>
                             <li>CSS</li>
                             <li>SCSS</li>
                             <li>JavaScript</li>
@@ -89,10 +141,10 @@ const UserPage = () => {
                     <div className={styles.divInfoRight}>
                         <h2 className={styles.titlesRight}>Social Networks</h2>
                         <ul>
-                            <li>Instagram</li>
-                            <li>Telegram</li>
-                            <li>Discord</li>
-                            <li>Tiktok</li>
+                            <li>Instagram: orest_blyakhar</li>
+                            <Link className={styles.links} to={'https://github.com/OrestBlyakhar'}><li>GitHub: OrestBlyakhar</li></Link>
+                            <li>Discord: Невротик#3664</li>
+                            <Link className={styles.links} to={'https://www.tiktok.com/@xorestx'}><li>Tiktok: xorestx</li></Link>
                         </ul>
                     </div>
                 </div>

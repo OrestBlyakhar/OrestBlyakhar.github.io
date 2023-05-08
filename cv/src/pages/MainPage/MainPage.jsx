@@ -1,5 +1,6 @@
 import styles from "./MainPage.module.scss"
 import { ButtonLogin } from "../../components/RouteHOC";
+import { Link } from "react-router-dom";
 const MainPage = () => {
     return (
         <div className={styles.wrapper}>
@@ -11,7 +12,7 @@ const MainPage = () => {
                         <h3 className={styles.profession}>Frontend Developer</h3>
                     </div>
                     <div>
-                        <h3 className={styles.titles}>Personal data</h3>
+                        <h3 className={styles.titles}>Personal info</h3>
                         <div className={styles.divInfo}>
                             <p>Rudno, Lviv 79493</p>
                             <p>+380685161907</p>
@@ -22,7 +23,7 @@ const MainPage = () => {
                     <div>
                         <h3 className={styles.titles}>Skills</h3>
                         <ul>
-                            <li>HTML</li>
+                            <li>HTML5</li>
                             <li>CSS</li>
                             <li>SCSS</li>
                             <li>JavaScript</li>
@@ -40,7 +41,7 @@ const MainPage = () => {
                         <h3 className={styles.titles}>Languages</h3>
                         <ul>
                             <li>Ukrainian - native speaker</li>
-                            <li>English - intermidiate</li>
+                            <li>English - intermediate</li>
                         </ul>
                     </div>
                 </div>
@@ -75,10 +76,10 @@ const MainPage = () => {
                     <div className={styles.divInfoRight}>
                         <h2 className={styles.titlesRight}>Social Networks</h2>
                         <ul>
-                            <li>Instagram</li>
-                            <li>Telegram</li>
-                            <li>Discord</li>
-                            <li>Tiktok</li>
+                            <li>Instagram: orest_blyakhar</li>
+                            <Link className={styles.links} to={'https://github.com/OrestBlyakhar'}><li>GitHub: OrestBlyakhar</li></Link>
+                            <li>Discord: Невротик#3664</li>
+                            <Link className={styles.links} to={'https://www.tiktok.com/@xorestx'}><li>Tiktok: xorestx</li></Link>
                         </ul>
                     </div>
                 </div>
