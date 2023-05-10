@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../common/AppRoutes";
 import {auth} from "../../firebase";
 import { signOut } from "firebase/auth";
+import { ButtonLogin } from "../../components/RouteHOC";
 
 export const mockData = {
     generalInfo: {
@@ -58,7 +59,7 @@ export const mockData = {
 
 const UserPage = () => {
     const navigate = useNavigate()
-    const HandleSignOut = async () => {
+    const handleSignOut = async () => {
         try {
             await signOut(auth);
             localStorage.removeItem('authUser')
@@ -69,6 +70,10 @@ const UserPage = () => {
     }
     return (
         <div className={styles.wrapper}>
+            <div className={styles.header}>
+                <ButtonLogin/>
+                <button className={styles.btnLogOut} onClick={handleSignOut}>Log out</button>
+            </div>
             <div className={styles.main}>
                 <div className={styles.leftSide}>
                     <div>
@@ -77,7 +82,7 @@ const UserPage = () => {
                         <h3 className={styles.profession}>Frontend Developer</h3>
                     </div>
                     <div>
-                        <h3 className={styles.titles}>Personal data</h3>
+                        <h3 className={styles.titles}>Personal info</h3>
                         <div className={styles.divInfo}>
                             <p>Rudno, Lviv 79493</p>
                             <p>+380685161907</p>
@@ -111,7 +116,6 @@ const UserPage = () => {
                     </div>
                 </div>
                 <div className={styles.rightSide}>
-                    <button className={styles.btnLogOut} onClick={HandleSignOut}>Log out</button>
                     <div className={styles.divInfoRight}>
                         <h2 className={styles.titlesRight}>Description</h2>
                         <p className={styles.description}>I'm Orest, 16 years old, I am purposeful, responsible, attentive, ready to learn new things,

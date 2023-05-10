@@ -20,7 +20,7 @@ export const PrivateRouteForHOC = ({HOC, Component}) => {
 }
 
 export const ButtonLogin = () => {
-    return <Link to={AppRoutes.LOGIN}><div className={styles.btnDiv}><button className={styles.btnLogin} type="button">Login</button></div></Link>
+    return <Link to={AppRoutes.LOGIN}><button className={styles.btnLogin} type="button">Login</button></Link>
 }
 
 export const ButtonHome = () => {

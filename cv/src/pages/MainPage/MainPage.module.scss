@@ -88,22 +88,30 @@
 
 .btnLogin{
   width: 90px;
-  height: 40px;
+  height: 50px;
   border: #2681a2 solid;
   border-radius: 15px;
   background-color: white;
   cursor: pointer;
-  position: fixed;
 }
 
 .btnLogOut{
   width: 80px;
-  height: 40px;
+  height: 50px;
   border: #2681a2 solid;
   border-radius: 15px;
   background-color: white;
   cursor: pointer;
-  position: fixed;
+}
+
+.btnEdit{
+  width: 80px;
+  height: 40px;
+  margin-left: 700px;
+  border: #2681a2 solid;
+  border-radius: 15px;
+  background-color: white;
+  cursor: pointer;
 }
 
 .btnDiv{
@@ -114,4 +122,16 @@
 .links{
   color: #2681a2;
   text-decoration: none;
+}
+
+.header{
+  width: 64%;
+  height: 50px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-right: 85px;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-between;
 }

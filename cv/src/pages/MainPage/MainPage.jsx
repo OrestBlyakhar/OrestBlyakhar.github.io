@@ -1,9 +1,27 @@
 import styles from "./MainPage.module.scss"
 import { ButtonLogin } from "../../components/RouteHOC";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { AppRoutes } from "../../common/AppRoutes";
+import {auth} from "../../firebase";
+import { signOut } from "firebase/auth";
+
 const MainPage = () => {
+    const navigate = useNavigate()
+    const handleSignOut = async () => {
+        try {
+            await signOut(auth);
+            localStorage.removeItem('authUser')
+            navigate(AppRoutes.MAIN)
+        } catch (e) {
+            console.log(e);
+        }
+    }
     return (
         <div className={styles.wrapper}>
+            <div className={styles.header}>
+                <ButtonLogin/>
+                <button className={styles.btnLogOut} onClick={handleSignOut}>Log out</button>
+            </div>
             <div className={styles.main}>
                 <div className={styles.leftSide}>
                     <div>
@@ -46,7 +64,6 @@ const MainPage = () => {
                     </div>
                 </div>
                 <div className={styles.rightSide}>
-                    <ButtonLogin/>
                     <div className={styles.divInfoRight}>
                         <h2 className={styles.titlesRight}>Description</h2>
                         <p className={styles.description}>I'm Orest, 16 years old, I am purposeful, responsible, attentive, ready to learn new things,

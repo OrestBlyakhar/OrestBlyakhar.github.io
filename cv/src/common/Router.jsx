@@ -6,6 +6,7 @@ import LoginPage from "../pages/LoginPage/LoginPage.jsx";
 import ErrorPage from "../pages/ErrorPage/ErrorPage.jsx";
 import LoginHOC from "../components/LoginHOC.js";
 import { PrivateRouteForHOC, PublicRouteForHOC } from "../components/RouteHOC.js";
+import Edit from "../pages/UserPage/Edit.jsx";
 
 export const router = createBrowserRouter([
     {
@@ -19,7 +20,7 @@ export const router = createBrowserRouter([
     },
     {
         path: AppRoutes.USER,
-        element: <PrivateRouteForHOC HOC={LoginHOC} Component={UserPage}/>
+        element: <PrivateRouteForHOC HOC={LoginHOC} Component={Edit}/>
     },
     {
         path: AppRoutes.ERROR,
