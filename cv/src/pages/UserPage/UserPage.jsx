@@ -1,5 +1,6 @@
 import styles from "../MainPage/MainPage.module.scss";
 import {Link} from "react-router-dom";
+import {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../common/AppRoutes";
 import {auth} from "../../firebase";
@@ -57,7 +58,41 @@ export const mockData = {
     },
 }
 
-const UserPage = () => {
+const UserPage = ({data, handleEdit, addInfo}) => {
+
+    const [generalInfo, setGeneralInfo] = useState(data.generalInfo);
+    const [personalInfo, setPersonalInfo]=useState(data.personalInfo);
+    const [languagesFormValue,setLanguagesFormValue]=useState(data.languages);
+    const [skillsFormValue,setSkillsFormValue]=useState(data.skills);
+    const [experience,setExperience] = useState(data.experience);
+    const [education, setEducation] = useState(data.education);
+    const [interestsFormValue,setInterestsFormValue]=useState(data.interests);
+    const [contactsFormValue,setContactsFormValue]=useState(data.contacts);
+    
+    useEffect(()=>{
+        setLanguagesFormValue(data.languages)
+        setSkillsFormValue(data.skills)
+        setInterestsFormValue(data.interests)
+        setContactsFormValue(data.socialNetworks)
+    }, [data])
+
+    const handleInputChange = (key,value)=>{
+        setGeneralInfo((prevState)=>{
+                return{
+                    ...prevState,
+                    [key]:value
+                }
+            }
+        )
+        setPersonalInfo((prevState)=>{
+                return{
+                    ...prevState,
+                    [key]:value
+                }
+            }
+        )
+    }
+
     const navigate = useNavigate()
     const handleSignOut = async () => {
         try {
@@ -78,8 +113,8 @@ const UserPage = () => {
                 <div className={styles.leftSide}>
                     <div>
                         <img className={styles.img} src="https://static.vecteezy.com/system/resources/previews/002/275/847/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg" alt="1" />
-                        <h1 className={styles.firstLastName}>BLIAKHAR OREST</h1>
-                        <h3 className={styles.profession}>Frontend Developer</h3>
+                        <h1 className={styles.firstLastName}>{data.generalInfo.fullName}</h1>
+                        <h3 className={styles.profession}>{data.generalInfo.fullName}</h3>
                     </div>
                     <div>
                         <h3 className={styles.titles}>Personal info</h3>
