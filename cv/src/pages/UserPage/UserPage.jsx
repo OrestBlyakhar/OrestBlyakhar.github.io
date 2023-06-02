@@ -73,7 +73,7 @@ const UserPage = ({data, handleEdit, addInfo}) => {
         setLanguagesFormValue(data.languages)
         setSkillsFormValue(data.skills)
         setInterestsFormValue(data.interests)
-        setContactsFormValue(data.socialNetworks)
+        setContactsFormValue(data.contacts)
     }, [data])
 
     const handleInputChange = (key,value)=>{
@@ -114,7 +114,7 @@ const UserPage = ({data, handleEdit, addInfo}) => {
                     <div>
                         <img className={styles.img} src="https://static.vecteezy.com/system/resources/previews/002/275/847/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg" alt="1" />
                         <h1 className={styles.firstLastName}>{data.generalInfo.fullName}</h1>
-                        <h3 className={styles.profession}>{data.generalInfo.fullName}</h3>
+                        <h3 className={styles.profession}>{data.generalInfo.position}</h3>
                     </div>
                     <div>
                         <h3 className={styles.titles}>Personal info</h3>
