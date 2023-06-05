@@ -4,15 +4,13 @@ import styles from "../MainPage/MainPage.module.scss"
 import MainPage from "../MainPage/MainPage"
 import {collection, addDoc, onSnapshot, doc, setDoc} from 'firebase/firestore'
 import {db} from "../../firebase";
-import {useSelector} from "react-redux";
 import { mockData } from "./UserPage";
 
 const UserHOC = () => {
     const [isEditMode,setIsEditMode] = useState(false);
-    const authUser = JSON.parse(localStorage.getItem('user'));
+    const authUser = JSON.parse(localStorage.getItem('authUser'));
     const [data, setData] = useState();
     const [isLoading,setIsLoading]=useState(true);
-    const collectionRef = collection(db, authUser?.uid)
     useEffect(()=>{
         getInfo();
     },[])
@@ -20,6 +18,7 @@ const UserHOC = () => {
         data && setIsLoading(false);
     },[data])
     const addInfo = async ()=>{
+        const collectionRef = collection(db, authUser?.uid);
         try {
             const docRef = await addDoc(collectionRef, mockData);
             docRef?.id && alert('YES!!!');
@@ -29,6 +28,7 @@ const UserHOC = () => {
 
     }
     const getInfo = ()=>{
+        const collectionRef = collection(db, authUser?.uid);
         onSnapshot(collectionRef, (snapshot)=>{
            const data = snapshot.docs.map((doc)=>({...doc.data(),id:doc.id}));
            setData(data[0]);
