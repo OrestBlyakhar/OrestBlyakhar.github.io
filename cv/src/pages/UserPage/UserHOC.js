@@ -5,14 +5,14 @@ import MainPage from "../MainPage/MainPage"
 import {collection, addDoc, onSnapshot, doc, setDoc} from 'firebase/firestore'
 import {db} from "../../firebase";
 import {useSelector} from "react-redux";
+import { mockData } from "./UserPage";
 
 const UserHOC = () => {
     const [isEditMode,setIsEditMode] = useState(false);
     const authUser = JSON.parse(localStorage.getItem('user'));
-    const mockData = useSelector((state)=>state.user);
     const [data, setData] = useState();
     const [isLoading,setIsLoading]=useState(true);
-    const collectionRef = collection(db, authUser?.uid);
+    const collectionRef = collection(db, authUser?.uid)
     useEffect(()=>{
         getInfo();
     },[])
