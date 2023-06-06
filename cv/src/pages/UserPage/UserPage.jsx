@@ -1,11 +1,11 @@
 import styles from "../MainPage/MainPage.module.scss";
-import {Link} from "react-router-dom";
 import {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../common/AppRoutes";
 import {auth} from "../../firebase";
 import { signOut } from "firebase/auth";
 import { ButtonLogin } from "../../components/RouteHOC";
+import { ULInputs } from "../../components/ULInputs";
 
 export const mockData = {
     generalInfo: {
@@ -96,17 +96,23 @@ const UserPage = ({data, handleEdit, addInfo}) => {
             <div className={styles.main}>
                 <div className={styles.leftSide}>
                     <div>
-                        <img className={styles.img} src="https://static.vecteezy.com/system/resources/previews/002/275/847/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg" alt="1" />
+                        <img src={data.generalInfo.imageUrl} alt={data.generalInfo.imageName} className={styles.img}/>
                         <h1 className={styles.firstLastName}>{data.generalInfo.fullName}</h1>
+                        <input className={styles.input} type="text" placeholder="FullName" onChange={(e)=>handleInputChange('fullName', e.target.value)}/>
                         <h3 className={styles.profession}>{data.generalInfo.position}</h3>
+                        <input className={styles.input} type="text" placeholder="Profession" onChange={(e)=>handleInputChange('position', e.target.value)}/>
                     </div>
                     <div>
                         <h3 className={styles.titles}>Personal info</h3>
                         <div className={styles.divInfo}>
                             <p>{data.personalInfo.residence}</p>
+                            <input className={styles.input} type="text" placeholder="Residence" onChange={(e)=>handleInputChange('residence', e.target.value)}/>
                             <p>{data.personalInfo.phoneNumber}</p>
+                            <input className={styles.input} type="text" placeholder="Phone number" onChange={(e)=>handleInputChange('phoneNumber', e.target.value)}/>
                             <p>{data.personalInfo.birthDate}</p>
+                            <input className={styles.input} type="text" placeholder="Date of birth" onChange={(e)=>handleInputChange('birthDate', e.target.value)}/>
                             <p>{data.personalInfo.email}</p>
+                            <input className={styles.input} type="text" placeholder="Email" onChange={(e)=>handleInputChange('email', e.target.value)}/>
                         </div>
                     </div>
                     <div>
@@ -116,11 +122,13 @@ const UserPage = ({data, handleEdit, addInfo}) => {
                                 <li key={index}>{skill}</li>
                             ))}
                         </ul>
+                        <ULInputs formValue={skillsFormValue} setFormValue={setSkillsFormValue} placeholder="New Skill"/>
                     </div>
                     <div>
                         <h3 className={styles.titles}>Experience</h3>
                         <div className={styles.divInfo}>
                             <p>{data.experience}</p>
+                            <input className={styles.input} type="text" placeholder="Experience" onChange={(e)=>handleInputChange('experience', e.target.value)}/>
                         </div>
                     </div>
                     <div>
@@ -130,12 +138,14 @@ const UserPage = ({data, handleEdit, addInfo}) => {
                                 <li key={index}>{language}</li>
                             ))}
                         </ul>
+                        <ULInputs formValue={languagesFormValue} setFormValue={setLanguagesFormValue} placeholder="New language"/>
                     </div>
                 </div>
                 <div className={styles.rightSide}>
                     <div className={styles.divInfoRight}>
                         <h2 className={styles.titlesRight}>Description</h2>
                         <p className={styles.description}>{data.generalInfo.description}</p>
+                        <input className={styles.input} type="text" placeholder="Description" onChange={(e)=>handleInputChange('description', e.target.value)}/>
                     </div>
                     <div>
                         <h2 className={styles.titlesRight}>Education</h2>
@@ -145,6 +155,7 @@ const UserPage = ({data, handleEdit, addInfo}) => {
                                     <li key={index}>{education}</li>
                                 ))}
                             </ul>
+                            <ULInputs formValue={educationFormValue} setFormValue={setEducationFormValue} placeholder="New education"/>
                         </div>
                     </div>
                     <div className={styles.divInfoRight}>
@@ -154,14 +165,16 @@ const UserPage = ({data, handleEdit, addInfo}) => {
                                     <li key={index}>{interest}</li>
                                 ))}
                         </ul>
+                        <ULInputs formValue={interestsFormValue} setFormValue={setInterestsFormValue} placeholder="New interest"/>
                     </div>
                     <div className={styles.divInfoRight}>
                         <h2 className={styles.titlesRight}>Social Networks</h2>
-                        {contactsFormValue.map((contact, index) => (
-                            <ul>
+                        <ul>
+                            {contactsFormValue.map((contact, index) => (
                                 <li key={index}>{contact}</li>
-                            </ul>
-                        ))}
+                            ))}
+                        </ul>
+                        <ULInputs formValue={contactsFormValue} setFormValue={setContactsFormValue} placeholder="New contact"/>
                     </div>
                 </div>
             </div>

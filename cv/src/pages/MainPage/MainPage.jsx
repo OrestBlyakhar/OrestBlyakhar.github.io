@@ -1,11 +1,12 @@
 import styles from "./MainPage.module.scss"
 import { ButtonLogin } from "../../components/RouteHOC";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AppRoutes } from "../../common/AppRoutes";
 import {auth} from "../../firebase";
 import { signOut } from "firebase/auth";
+import { mockData } from "../UserPage/UserPage";
 
-const MainPage = () => {
+const MainPage = ({data}) => {
     const navigate = useNavigate()
     const handleSignOut = async () => {
         try {
@@ -25,78 +26,61 @@ const MainPage = () => {
             <div className={styles.main}>
                 <div className={styles.leftSide}>
                     <div>
-                        <img className={styles.img} src="https://static.vecteezy.com/system/resources/previews/002/275/847/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg" alt="1" />
-                        <h1 className={styles.firstLastName}>BLIAKHAR OREST</h1>
-                        <h3 className={styles.profession}>Frontend Developer</h3>
+                        <img src={mockData.generalInfo.imageUrl} alt={mockData.generalInfo.imageName} className={styles.img}/>
+                        <h1 className={styles.firstLastName}>{mockData.generalInfo.fullName}</h1>
+                        <h3 className={styles.profession}>{mockData.generalInfo.position}</h3>
                     </div>
                     <div>
                         <h3 className={styles.titles}>Personal info</h3>
                         <div className={styles.divInfo}>
-                            <p>Rudno, Lviv 79493</p>
-                            <p>+380685161907</p>
-                            <p>29-12-2006</p>
-                            <p>blyakhar76@gmail.com</p>
+                            <p>{mockData.personalInfo.residence}</p>
+                            <p>{mockData.personalInfo.phoneNumber}</p>
+                            <p>{mockData.personalInfo.birthDate}</p>
+                            <p>{mockData.personalInfo.email}</p>
                         </div>
                     </div>
                     <div>
                         <h3 className={styles.titles}>Skills</h3>
                         <ul>
-                            <li>HTML5</li>
-                            <li>CSS</li>
-                            <li>SCSS</li>
-                            <li>JavaScript</li>
-                            <li>React</li>
-                            <li>Git</li>
+                            {mockData.skills.map((skill, index) => <li key={index}>{skill}</li>)}
                         </ul>
                     </div>
                     <div>
                         <h3 className={styles.titles}>Experience</h3>
                         <div className={styles.divInfo}>
-                            <p>No work experience</p>
+                            <p>{mockData.experience}</p>
                         </div>
                     </div>
                     <div>
                         <h3 className={styles.titles}>Languages</h3>
                         <ul>
-                            <li>Ukrainian - native speaker</li>
-                            <li>English - intermediate</li>
+                            {mockData.languages.map((languages, index) => <li key={index}>{languages}</li>)}
                         </ul>
                     </div>
                 </div>
                 <div className={styles.rightSide}>
                     <div className={styles.divInfoRight}>
                         <h2 className={styles.titlesRight}>Description</h2>
-                        <p className={styles.description}>I'm Orest, 16 years old, I am purposeful, responsible, attentive, ready to learn new things,
-                            want to work as a Front-end developer and develop myself in this direction.
-                        </p>
+                        <p className={styles.description}>{mockData.generalInfo.description}</p>
                     </div>
                     <div>
                         <h2 className={styles.titlesRight}>Education</h2>
                         <div>
                             <ul className={styles.divInfoRight}>
-                                <li>September 2012 - today:</li>
-                                <li>Lyceum №74 named after Mariyka Pidhiryanka</li>
-                                <li>September 2022 - May 2023:</li>
-                                <li>Frontend developer - Logos</li>
+                            {mockData.education.map((education, index) => <li key={index}>{education}</li>)}
                             </ul>
                         </div>
                     </div>
                     <div className={styles.divInfoRight}>
                         <h2 className={styles.titlesRight}>Interests</h2>
                         <ul>
-                            <li>Football</li>
-                            <li>Computer games</li>
-                            <li>Basketball</li>
-                            <li>Sport</li>
+                        {mockData.interests.map((interest, index) => <li key={index}>{interest}</li>)}
                         </ul>
                     </div>
                     <div className={styles.divInfoRight}>
                         <h2 className={styles.titlesRight}>Social Networks</h2>
                         <ul>
-                            <li>Instagram: orest_blyakhar</li>
-                            <Link className={styles.links} to={'https://github.com/OrestBlyakhar'}><li>GitHub: OrestBlyakhar</li></Link>
-                            <li>Discord: Невротик#3664</li>
-                            <Link className={styles.links} to={'https://www.tiktok.com/@xorestx'}><li>Tiktok: xorestx</li></Link>
+                            {mockData.contacts.map((contact, index) => <li key={index}>{contact}</li>)}
                         </ul>
                     </div>
                 </div>
