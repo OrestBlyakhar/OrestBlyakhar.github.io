@@ -3,14 +3,19 @@ import UserPage from "./UserPage";
 import styles from "../MainPage/MainPage.module.scss"
 import MainPage from "../MainPage/MainPage"
 import {collection, addDoc, onSnapshot, doc, setDoc} from 'firebase/firestore'
-import {db} from "../../firebase";
+import {db, storage} from "../../firebase";
 import { mockData } from "./UserPage";
+import {ref, uploadBytesResumable, getDownloadURL, deleteObject} from "firebase/storage";
 
 const UserHOC = () => {
     const [isEditMode,setIsEditMode] = useState(false);
     const authUser = JSON.parse(localStorage.getItem('authUser'));
     const [data, setData] = useState();
     const [isLoading,setIsLoading]=useState(true);
+    const [uploading, setUploading] = useState(false);
+    const [fileInfo, setFileInfo] = useState(null);
+    const [previousImageName, setPreviousImageName] = useState('');
+    const [newImage, setNewImage] = useState('');
     useEffect(()=>{
         getInfo();
     },[])
@@ -38,7 +43,10 @@ const UserHOC = () => {
         const docRef = doc(db,authUser?.uid, data?.id);
         await setDoc(docRef, {
             ...data,
-            generalInfo,
+            generalInfo:{
+                ...generalInfo,
+                ...newImage
+            },
             personalInfo,
             languages,
             skills,
@@ -48,12 +56,49 @@ const UserHOC = () => {
             contacts
         })
     }
+    const deleteImageFromStorage = (imageName = previousImageName) => {
+        console.log(imageName)
+        const storageRef = ref(storage, `/${authUser?.uid}/${imageName}`)
+        deleteObject(storageRef)
+            .then(() => {
+                setPreviousImageName('')
+                setNewImage({})
+            })
+            .catch((e) => console.log("File delete Error"))
+    }
+    const handleFileUpload = async (file)=>{
+        setUploading(true);
+        const storageRef = ref(storage, `/${authUser?.uid}/${file.name}`)
+        const uploadData = uploadBytesResumable(storageRef, file)
+
+        uploadData.on(
+            'state_changed',
+            (snapshot) => {
+                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+            },
+            (error) => {
+                setUploading(false);
+                setFileInfo('')
+            },
+            () => {
+                getDownloadURL(uploadData.snapshot.ref)
+                    .then(url => {
+                        setUploading(false);
+                        setPreviousImageName(data?.generalInfo?.imageName)
+                        setNewImage({
+                            imageUrl: url,
+                            imageName: file.name,
+                        })
+                    })
+            }
+        )
+    }
 
     return (
         <div>
             <button className={styles.btnEdit} onClick={()=> setIsEditMode((prevState) => !prevState)}>{ isEditMode ? 'Save' : 'Edit'}</button>
             {isEditMode&&data?
-                <UserPage addInfo={addInfo} data={data} handleEdit={updateInfo}/>
+                <UserPage addInfo={addInfo} data={data} handleGIEEdit={updateInfo} setFileInfo={setFileInfo} fileInfo={fileInfo} handleFileUpload={handleFileUpload} uploading={uploading}/>
                 :isLoading?
                     <h1>Loading</h1>
                     :data?

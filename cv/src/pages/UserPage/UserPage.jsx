@@ -6,20 +6,22 @@ import {auth} from "../../firebase";
 import { signOut } from "firebase/auth";
 import { ButtonLogin } from "../../components/RouteHOC";
 import { ULInputs } from "../../components/ULInputs";
+import {Loader, Uploader} from "rsuite";
+import AvatarIcon from '@rsuite/icons/legacy/Avatar';
 
 export const mockData = {
     generalInfo: {
         fullName: 'BLIAKHAR OREST',
         position: 'Frontend Developer',
         description: 'I`m Orest, 16 years old, I am purposeful, responsible, attentive, ready to learn new things, want to work as a Front-end developer and develop myself in this direction',
-        imageUrl: 'https://static.vecteezy.com/system/resources/previews/002/275/847/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg',
-        imageName: '1',
+        imageUrl: '',
+        imageName: '',
     },
     personalInfo: {
         residence: 'Rudno, Lviv 79493',
         phoneNumber: '+380685161907',
         birthDate: '29-12-2006',
-        email: 'blyakhar76@gmail.com'
+        email: 'blyakhar76@gmail.com',
     },
     languages: [
         'Ukrainian - native speaker', 'English - Intermediate'
@@ -40,9 +42,16 @@ export const mockData = {
         'Instagram: orest_blyakhar', 'GitHub: https://github.com/OrestBlyakhar', 'Discord: Невротик#3664', 'TikTok: https://www.tiktok.com/@xorestx'
     ],
 }
+function previewFile(file, callback) {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+        callback(reader.result);
+    };
+    reader.readAsDataURL(file);
+}
 
-const UserPage = ({data, handleEdit, addInfo}) => {
-
+const UserPage = ({data, handleGIEEdit, addInfo, setFileInfo, uploading, fileInfo, handleFileUpload}) => {
+    const [initialized, setInitialized] = useState(false);
     const [generalInfo, setGeneralInfo] = useState(data.generalInfo);
     const [personalInfo, setPersonalInfo]=useState(data.personalInfo);
     const [languagesFormValue,setLanguagesFormValue]=useState(data.languages);
@@ -52,13 +61,20 @@ const UserPage = ({data, handleEdit, addInfo}) => {
     const [interestsFormValue,setInterestsFormValue]=useState(data.interests);
     const [contactsFormValue,setContactsFormValue]=useState(data.contacts);
     
+    useEffect(() => {
+        if (!initialized) {
+            // addInfo();
+            setInitialized(true);
+        }
+    }, [initialized]);
+
     useEffect(()=>{
         setLanguagesFormValue(data.languages)
         setSkillsFormValue(data.skills)
         setEducationFormValue(data.education)
         setInterestsFormValue(data.interests)
         setContactsFormValue(data.contacts)
-    }, [data])
+    }, [data]);
 
     const handleInputChange = (key,value)=>{
         setGeneralInfo((prevState)=>{
@@ -91,12 +107,36 @@ const UserPage = ({data, handleEdit, addInfo}) => {
         <div className={styles.wrapper}>
             <div className={styles.header}>
                 <ButtonLogin/>
+                <button className={styles.btnSaveInfo} type="button" onClick={()=>handleGIEEdit(generalInfo,personalInfo,languagesFormValue,skillsFormValue,experience,educationFormValue,interestsFormValue,contactsFormValue)}>Save Info</button>
                 <button className={styles.btnLogOut} onClick={handleSignOut}>Log out</button>
             </div>
             <div className={styles.main}>
                 <div className={styles.leftSide}>
                     <div>
-                        <img src={data.generalInfo.imageUrl} alt={data.generalInfo.imageName} className={styles.img}/>
+                        <Uploader
+                                fileListVisible={false}
+                                listType="picture"
+                                action=""
+                                multiple={false}
+                                autoUpload={false}
+                                onChange={async (fileList)=>{
+                                    previewFile(fileList[fileList.length-1].blobFile, value => {
+                                        setFileInfo(value);
+                                    });
+                                    handleFileUpload(fileList[fileList.length-1].blobFile)
+                                }}
+                        >
+                                <button style={{ width: 320, height: 300 }}>
+                                    {uploading && <Loader backdrop center />}
+                                    {generalInfo?.imageUrl && !fileInfo ? (
+                                        <img src={generalInfo?.imageUrl  } width="100%" height="100%" alt="1" />
+                                    ) : fileInfo ? (
+                                        <img src={fileInfo} width="100%" height="100%" alt="1"/>
+                                    ) : (
+                                        <AvatarIcon style={{ fontSize: 80 }} />
+                                    )}
+                                </button>
+                            </Uploader>
                         <h1 className={styles.firstLastName}>{data.generalInfo.fullName}</h1>
                         <input className={styles.input} type="text" placeholder="FullName" onChange={(e)=>handleInputChange('fullName', e.target.value)}/>
                         <h3 className={styles.profession}>{data.generalInfo.position}</h3>
