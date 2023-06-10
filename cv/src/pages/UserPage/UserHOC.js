@@ -19,9 +19,9 @@ const UserHOC = () => {
     useEffect(()=>{
         getInfo();
     },[])
-    useEffect(()=> {
-        data && setIsLoading(false);
-    },[data])
+    // useEffect(()=> {
+    //     data && setIsLoading(false);
+    // },[data])
     const addInfo = async ()=>{
         const collectionRef = collection(db, authUser?.uid);
         try {
@@ -40,7 +40,7 @@ const UserHOC = () => {
         })
     }
     const updateInfo = async (generalInfo,personalInfo,languages,skills,experience,education,interests,contacts)=>{
-        const docRef = doc(db,authUser?.uid, data?.id);
+        const docRef = doc(db, authUser?.uid, data?.id);
         await setDoc(docRef, {
             ...data,
             generalInfo:{
@@ -64,7 +64,7 @@ const UserHOC = () => {
                 setPreviousImageName('')
                 setNewImage({})
             })
-            .catch((e) => console.log("File delete Error"))
+            .catch((e) => console.log("Не вдалося видалити файл"))
     }
     const handleFileUpload = async (file)=>{
         setUploading(true);
@@ -97,13 +97,9 @@ const UserHOC = () => {
     return (
         <div>
             <button className={styles.btnEdit} onClick={()=> setIsEditMode((prevState) => !prevState)}>{ isEditMode ? 'Save' : 'Edit'}</button>
-            {isEditMode&&data?
+            {isEditMode?
                 <UserPage addInfo={addInfo} data={data} handleGIEEdit={updateInfo} setFileInfo={setFileInfo} fileInfo={fileInfo} handleFileUpload={handleFileUpload} uploading={uploading}/>
-                :isLoading?
-                    <h1>Loading</h1>
-                    :data?
-                    <MainPage data={data}/>
-                        : <h1>No data</h1>
+                :<MainPage data={data}/>
             }
         </div>
     )

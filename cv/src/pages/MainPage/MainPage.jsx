@@ -27,13 +27,13 @@ const MainPage = ({data}) => {
                 <div className={styles.leftSide}>
                     <div>
                         {data?
-                            data?.generalInfo?.imageUrl &&
                             <img
                                 src={data?.generalInfo?.imageUrl}
                                 alt={data?.generalInfo?.imageName}
                                 className={styles.img}
                             />:
-                            <img className={styles.img} src={mockData.generalInfo.imageUrl} alt={mockData.generalInfo.imageName}/>
+                            <img className={styles.img} src={mockData.generalInfo.imageUrl} alt={mockData.generalInfo.imageName}/> &&
+                            console.log("no data")
                         }
                         <h1 className={styles.firstLastName}>{data ? data.generalInfo.fullName : mockData.generalInfo.fullName}</h1>
                         <h3 className={styles.profession}>{data ? data.generalInfo.position : mockData.generalInfo.position}</h3>
