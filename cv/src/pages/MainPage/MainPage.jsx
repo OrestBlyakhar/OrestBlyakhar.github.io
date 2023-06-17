@@ -32,8 +32,7 @@ const MainPage = ({data}) => {
                                 alt={data?.generalInfo?.imageName}
                                 className={styles.img}
                             />:
-                            <img className={styles.img} src={mockData.generalInfo.imageUrl} alt={mockData.generalInfo.imageName}/> &&
-                            console.log("no data")
+                            <img className={styles.img} src='https://static.vecteezy.com/system/resources/previews/002/275/847/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg' alt='male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg'/>
                         }
                         <h1 className={styles.firstLastName}>{data ? data.generalInfo.fullName : mockData.generalInfo.fullName}</h1>
                         <h3 className={styles.profession}>{data ? data.generalInfo.position : mockData.generalInfo.position}</h3>

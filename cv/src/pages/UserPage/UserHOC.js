@@ -5,7 +5,7 @@ import MainPage from "../MainPage/MainPage"
 import {collection, addDoc, onSnapshot, doc, setDoc} from 'firebase/firestore'
 import {db, storage} from "../../firebase";
 import { mockData } from "./UserPage";
-import {ref, uploadBytesResumable, getDownloadURL, deleteObject} from "firebase/storage";
+import {ref, uploadBytesResumable, getDownloadURL, deleteObject, listAll} from "firebase/storage";
 
 const UserHOC = () => {
     const [isEditMode,setIsEditMode] = useState(false);
@@ -19,9 +19,7 @@ const UserHOC = () => {
     useEffect(()=>{
         getInfo();
     },[])
-    // useEffect(()=> {
-    //     data && setIsLoading(false);
-    // },[data])
+
     const addInfo = async ()=>{
         const collectionRef = collection(db, authUser?.uid);
         try {
@@ -56,6 +54,34 @@ const UserHOC = () => {
             contacts
         })
     }
+
+    useEffect(() => {
+        data && setIsLoading(false)
+        console.log(data)
+        data?.generalInfo && getImagesList()
+    }, [data])
+
+    const getImagesList = () => {
+        const listRef = ref(storage, `/${authUser?.uid}`)
+        listAll(listRef)
+            .then((res) => {
+                const imageLIst = res.items.map((itemRef) => itemRef?.name)
+                console.log(imageLIst)
+                const notUsedImages = imageLIst.filter(img => img !== data?.generalInfo?.imageName)
+                console.log(notUsedImages)
+                console.log(notUsedImages?.length > 0)
+                notUsedImages?.length > 0 && deleteUnusedImages(notUsedImages)
+            }).catch((error) => {
+            console.log(error)
+            // Uh-oh, an error occurred!
+        });
+    }
+
+    const deleteUnusedImages = (arr) => {
+        console.log(arr)
+        arr.forEach(item => deleteImageFromStorage(item))
+    }
+
     const deleteImageFromStorage = (imageName = previousImageName) => {
         console.log(imageName)
         const storageRef = ref(storage, `/${authUser?.uid}/${imageName}`)
