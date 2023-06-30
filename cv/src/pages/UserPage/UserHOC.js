@@ -125,7 +125,7 @@ const UserHOC = () => {
             <button className={styles.btnEdit} onClick={()=> setIsEditMode((prevState) => !prevState)}>{ isEditMode ? 'Save' : 'Edit'}</button>
             {isEditMode?
                 <UserPage addInfo={addInfo} data={data} handleGIEEdit={updateInfo} setFileInfo={setFileInfo} fileInfo={fileInfo} handleFileUpload={handleFileUpload} uploading={uploading}/>
-                :<MainPage data={data}/>
+                : <MainPage data={data}/>
             }
         </div>
     )
