@@ -1,0 +1,265 @@
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #0d1117;
+    color: #c9d1d9;
+}
+
+header {
+    background: linear-gradient(90deg, #161b22 0%, #21262d 100%);
+    border-bottom: 2px solid #58a6ff;
+    padding: 20px 0;
+    box-shadow: 0 4px 15px rgba(88, 166, 255, 0.2);
+}
+
+.header-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+h1 {
+    color: #ffffff;
+    margin-top: 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+}
+
+nav ul li a{
+    color: #8b949e;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+nav ul li a:hover, nav ul li a.active {
+    color: #58a6ff;
+    text-shadow: 0 0 10px rgba(88, 166, 255, 0.5);
+}
+
+main {
+    padding: 30px 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+    min-height: 70vh;
+}
+
+.page-section {
+    display: none;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.active-section {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+h2 {
+    color: #ffffff;
+    border-bottom: 2px solid #30363d;
+    padding-bottom: 10px;
+    margin-bottom: 25px;
+}
+
+.mt-40 { margin-top: 40px; }
+
+/* Картки */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.game-card, .tournament-card, .stats-card {
+    background-color: #161b22;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #30363d;
+    text-align: center;
+    transition: transform 0.3s, border 0.3s;
+}
+
+.game-card:hover, .tournament-card:hover {
+    transform: translateY(-5px);
+    border-color: #58a6ff;
+    box-shadow: 0 8px 20px rgba(88, 166, 255, 0.15);
+}
+
+/* Улюблена гра (подвійний клік - Варіант 2, п.2) */
+.game-card.favorite {
+    transform: scale(1.05);
+    border: 3px solid #f8e82c;
+    box-shadow: 0 0 15px rgba(248, 232, 44, 0.4);
+}
+
+img {
+    max-width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+button {
+    background-color: #238636;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background 0.3s;
+    width: 100%;
+    margin-top: 15px;
+}
+
+button:hover { background-color: #2ea043; }
+.fav-btn { background-color: #1f6feb; }
+.fav-btn:hover { background-color: #388bfd; }
+
+.progress-container {
+    background: #161b22;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #30363d;
+    margin-top: 20px;
+}
+
+.progress-bar-bg {
+    width: 100%;
+    background-color: #21262d;
+    border-radius: 10px;
+    height: 25px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #8a2be2, #ff00ff);
+    box-shadow: 0 0 10px rgba(255, 0, 255, 0.6);
+}
+
+.modal {
+    display: none; 
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: #161b22;
+    margin: 5vh auto;
+    padding: 30px;
+    border: 1px solid #58a6ff;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 85vh;
+    position: relative;
+    overflow-y: auto;
+}
+
+.close-btn {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    color: #8b949e;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.close-btn:hover { color: #ff6347; }
+
+form label { display: block; margin: 15px 0 5px; color: #c9d1d9; }
+form input {
+    width: 100%; padding: 10px;
+    background: #0d1117; border: 1px solid #30363d;
+    color: white; border-radius: 5px; box-sizing: border-box;
+}
+form input:focus { outline: none; border-color: #58a6ff; }
+
+
+.form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+form select {
+    width: 100%; 
+    padding: 10px;
+    background: #0d1117; 
+    border: 1px solid #30363d;
+    color: white; 
+    border-radius: 5px; 
+    box-sizing: border-box;
+    margin-top: 5px;
+    cursor: pointer;
+}
+
+form select:focus { 
+    outline: none; 
+    border-color: #58a6ff; 
+}
+
+.form-checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 20px 0;
+    text-align: left;
+}
+
+.form-checkbox label {
+    margin: 0;
+    font-size: 13px;
+    color: #8b949e;
+    line-height: 1.4;
+}
+
+.form-checkbox input[type="checkbox"] {
+    width: auto;
+    margin-top: 3px;
+    cursor: pointer;
+    transform: scale(1.2);
+}
+
+.submit-btn {
+    background-color: #1f6feb;
+    margin-top: 10px;
+}
+
+.submit-btn:hover {
+    background-color: #58a6ff;
+}
+
+footer {
+    background-color: #161b22;
+    text-align: center;
+    padding: 20px;
+    border-top: 1px solid #30363d;
+    margin-top: 40px;
+}
