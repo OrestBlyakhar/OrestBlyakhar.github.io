@@ -1,4 +1,3 @@
-import { allGames } from './games.js';
 
 const navLinks = document.querySelectorAll('.nav-link');
 const sections = document.querySelectorAll('.page-section');
@@ -21,35 +20,33 @@ navLinks.forEach(link => {
 });
 
 
-// const allGames = [
-//     { name: "Cyberpunk 2077", genre: "RPG", img: "/img/cyberpunk2077.jpg" },
-//     { name: "Apex Legends", genre: "Королівська битва", img: "/img/Apex-Legends.jpg" },
-//     { name: "Elden Ring", genre: "Action RPG", img: "/img/Elden-Ring.jpg" },
-//     { name: "Overwatch 2", genre: "Геройський шутер", img: "/img/overwatch2.jpg" },
-//     { name: "The Witcher 3", genre: "RPG", img: "/img/witcher3.jpg" }
-// ]
-
 const recommendedContainer = document.getElementById('recommended-games');
 let gamesGenerated = 0;
 const gamesToGenerate = 3;
 
-while (gamesGenerated < gamesToGenerate) {
-    const randomIndex = Math.floor(Math.random() * allGames.length);
-    const game = allGames[randomIndex];
+async function generateGamesLoop() {
+    const allGamesRes = await fetch('./games.json');
+    const allGames = await allGamesRes.json();
 
-    const article = document.createElement('article');
-    article.className = 'game-card';
-    article.innerHTML = `
-        <img src="${game.img}" alt="${game.name}">
-        <h3>${game.name}</h3>
-        <p><strong>Жанр:</strong>${game.genre}</p>
-        <button class="fav-btn">Подвійний клік: Улюблена</button>
-    `;
 
-    recommendedContainer.appendChild(article);
+    while (gamesGenerated < gamesToGenerate) {
+        const randomIndex = Math.floor(Math.random() * allGames.length);
+        const game = allGames[randomIndex];
 
-    allGames.splice(randomIndex, 1);
-    gamesGenerated++;
+        const article = document.createElement('article');
+        article.className = 'game-card';
+        article.innerHTML = `
+            <img src="${game.img}" alt="${game.name}">
+            <h3>${game.name}</h3>
+            <p><strong>Жанр:</strong>${game.genre}</p>
+            <button class="fav-btn">Подвійний клік: Улюблена</button>
+        `;
+
+        recommendedContainer.appendChild(article);
+
+        allGames.splice(randomIndex, 1);
+        gamesGenerated++;
+    }
 }
 
 
@@ -116,3 +113,5 @@ form.addEventListener('submit', function(event) {
     modal.style.display = 'none';
     form.reset();
 });
+
+generateGamesLoop();
