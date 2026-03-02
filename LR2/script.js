@@ -1,3 +1,5 @@
+import { allGames } from './games.js';
+
 const navLinks = document.querySelectorAll('.nav-link');
 const sections = document.querySelectorAll('.page-section');
 
@@ -19,13 +21,13 @@ navLinks.forEach(link => {
 });
 
 
-const allGames = [
-    { name: "Cyberpunk 2077", genre: "RPG", img: "/img/cyberpunk2077.jpg" },
-    { name: "Apex Legends", genre: "Королівська битва", img: "/img/Apex-Legends.jpg" },
-    { name: "Elden Ring", genre: "Action RPG", img: "/img/Elden-Ring.jpg" },
-    { name: "Overwatch 2", genre: "Геройський шутер", img: "/img/overwatch2.jpg" },
-    { name: "The Witcher 3", genre: "RPG", img: "/img/witcher3.jpg" }
-]
+// const allGames = [
+//     { name: "Cyberpunk 2077", genre: "RPG", img: "/img/cyberpunk2077.jpg" },
+//     { name: "Apex Legends", genre: "Королівська битва", img: "/img/Apex-Legends.jpg" },
+//     { name: "Elden Ring", genre: "Action RPG", img: "/img/Elden-Ring.jpg" },
+//     { name: "Overwatch 2", genre: "Геройський шутер", img: "/img/overwatch2.jpg" },
+//     { name: "The Witcher 3", genre: "RPG", img: "/img/witcher3.jpg" }
+// ]
 
 const recommendedContainer = document.getElementById('recommended-games');
 let gamesGenerated = 0;

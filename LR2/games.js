@@ -1,0 +1,7 @@
+export const allGames = [
+    { name: "Cyberpunk 2077", genre: "RPG", img: "/img/cyberpunk2077.jpg" },
+    { name: "Apex Legends", genre: "Королівська битва", img: "/img/Apex-Legends.jpg" },
+    { name: "Elden Ring", genre: "Action RPG", img: "/img/Elden-Ring.jpg" },
+    { name: "Overwatch 2", genre: "Геройський шутер", img: "/img/overwatch2.jpg" },
+    { name: "The Witcher 3", genre: "RPG", img: "/img/witcher3.jpg" }
+]
