@@ -15,7 +15,8 @@ function App() {
             <ul id="nav-menu">
               <li><Link to="/" className="nav-link">Ігри</Link></li>
               <li><Link to="/tournaments" className="nav-link">Турніри</Link></li>
-              <li><Link to="/profile" className="nav-link">Мій профіль</Link></li>
+              {/* Вкладка Профіль тепер буде відповідати за вхід та реєстрацію */}
+              <li><Link to="/profile" className="nav-link">Мій профіль / Вхід</Link></li>
             </ul>
           </nav>
         </div>
@@ -32,7 +33,6 @@ function App() {
       <footer>
         <p>Контактна інформація:</p>
         <p>Адреса: вул. Мазепи, 10, м. Львів</p>
-        <p>Телефон: +380 44 123 4567 | Електронна пошта: info@onlinegames.ua</p>
         <p>© 2026 Організація онлайн-ігор</p>
       </footer>
     </Router>
