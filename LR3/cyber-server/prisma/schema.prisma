@@ -1,0 +1,60 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// Модель Користувача
+model User {
+  id       Int      @id @default(autoincrement())
+  email    String   @unique
+  password String
+  name     String?
+  ratings  Rating[] // Зв'язок: один користувач може мати багато оцінок
+}
+
+// Модель Гри
+model Game {
+  id      Int      @id @default(autoincrement())
+  name    String
+  genre   String
+  img     String
+  ratings Rating[] // Зв'язок: одна гра має багато оцінок від різних юзерів
+}
+
+// Модель Оцінки (Зв'язує користувача та гру)
+model Rating {
+  id      Int  @id @default(autoincrement())
+  value   Int  // Сама оцінка (від 1 до 5)
+  userId  Int
+  gameId  Int
+  user    User @relation(fields: [userId], references: [id])
+  game    Game @relation(fields: [gameId], references: [id])
+
+  // Запобігає тому, щоб один юзер оцінив одну гру двічі
+  @@unique([userId, gameId]) 
+}
+
+// Модель Турніру
+model Tournament {
+  id         Int      @id @default(autoincrement())
+  title      String
+  game       String
+  date       String
+  conditions String
+  teams      Team[]
+}
+
+// Модель Команди, що зареєструвалася
+model Team {
+  id           Int        @id @default(autoincrement())
+  name         String
+  discord      String
+  rating       Int
+  tournamentId Int
+  tournament   Tournament @relation(fields: [tournamentId], references: [id])
+}

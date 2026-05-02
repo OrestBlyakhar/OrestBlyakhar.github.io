@@ -1,153 +1,159 @@
-import React, { useState } from 'react';
-import { auth, googleProvider } from '../firebase';
-import { signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from 'firebase/auth';
-import { useAuthState } from 'react-firebase-hooks/auth';
-
-// Функція для відображення аватара
-const UserAvatar = ({ user }) => {
-  if (user.photoURL) {
-    return <img src={user.photoURL} alt="Avatar" className="user-photo" style={{ display: 'block', margin: '0 auto 15px auto' }} />;
-  }
-  const initial = (user.displayName || user.email || "G")[0].toUpperCase();
-  return (
-    <div className="avatar-placeholder" style={{ margin: '0 auto 15px auto' }}>
-      {initial}
-    </div>
-  );
-};
-
-// Функція для перекладу помилок Firebase
-const getFriendlyErrorMessage = (errorCode) => {
-  switch (errorCode) {
-    case 'auth/invalid-email': return 'Неправильний формат email-адреси.';
-    case 'auth/user-not-found': return 'Користувача з такою поштою не знайдено.';
-    case 'auth/wrong-password': return 'Неправильний пароль.';
-    case 'auth/invalid-credential': return 'Неправильний email або пароль.';
-    case 'auth/email-already-in-use': return 'Ця пошта вже зареєстрована в системі.';
-    case 'auth/weak-password': return 'Пароль занадто легкий (мінімум 6 символів).';
-    case 'auth/missing-password': return 'Будь ласка, введіть пароль.';
-    default: return 'Сталася помилка. Перевірте дані та спробуйте ще раз.';
-  }
-};
+import React, { useState, useEffect } from 'react';
 
 function Profile() {
-  const [user] = useAuthState(auth);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState(''); // Додали ім'я для реєстрації
+  const [isLoginMode, setIsLoginMode] = useState(true);
   
-  const [isLoginMode, setIsLoginMode] = useState(true); 
-  const [errorMsg, setErrorMsg] = useState('');
+  // Стан користувача тепер беремо з пам'яті браузера
+  const [user, setUser] = useState(null);
+  const [toast, setToast] = useState(null);
+
+  // Перевіряємо, чи юзер вже логінився раніше
+  useEffect(() => {
+    const savedUser = localStorage.getItem('user');
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
+    }
+  }, []);
+
+  const showToast = (message, type = 'error') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 4000);
+  };
 
   const handleLogout = () => {
-    signOut(auth);
-    setEmail('');       // Видаляємо пошту з пам'яті
-    setPassword('');    // Видаляємо пароль з пам'яті
-    setErrorMsg('');    // Прибираємо помилки
+    // Видаляємо токен і дані юзера при виході
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    setUser(null);
+    setEmail('');
+    setPassword('');
   };
 
-  // Обробник помилок для авторизації
-  const handleAuthAction = () => {
-    setErrorMsg(''); // Очищаємо попередню помилку перед новим запитом
-
+  const handleAuthAction = async (e) => {
+    e.preventDefault();
     if (!email.trim() || !password.trim()) {
-      setErrorMsg('Будь ласка, обов\'язково введіть email та пароль.');
-      return; // Зупиняємо функцію, щоб не відправляти пусті дані у Firebase
+      return showToast('Введіть пошту та пароль!', 'error');
     }
 
-    if (!isLoginMode && password.length < 6) {
-      setErrorMsg('Для надійності пароль має містити мінімум 6 символів.');
-      return;
-    }
+    // Визначаємо кінцеву точку та дані для запиту в залежності від режиму (вхід чи реєстрація)
+    const endpoint = isLoginMode ? '/api/auth/login' : '/api/auth/register';
+    // Якщо реєстрація, передаємо ще й ім'я
+    const bodyData = isLoginMode ? { email, password } : { email, password, name };
 
-    if (isLoginMode) {
-      // Логіка ВХОДУ
-      signInWithEmailAndPassword(auth, email, password)
-        .catch(err => setErrorMsg(getFriendlyErrorMessage(err.code)));
-    } else {
-      // Логіка РЕЄСТРАЦІЇ
-      createUserWithEmailAndPassword(auth, email, password)
-        .catch(err => setErrorMsg(getFriendlyErrorMessage(err.code)));
+    try {
+      // Відправляємо запит на сервер для входу або реєстрації
+      const response = await fetch(`http://localhost:5000${endpoint}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(bodyData)
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        // Якщо сервер повернув помилку, показуємо її в тості
+        return showToast(data.message, 'error');
+      }
+
+      // Якщо все успішно, зберігаємо JWT токен та юзера в браузері
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      
+      setUser(data.user);
+      showToast(isLoginMode ? 'Успішний вхід!' : 'Реєстрація успішна!', 'success');
+      
+    } catch (err) {
+      showToast('Помилка з\'єднання з сервером', 'error');
     }
   };
 
-  const handleGoogleLogin = () => {
-    setErrorMsg('');
-    signInWithPopup(auth, googleProvider)
-      .catch(err => setErrorMsg("Помилка входу через Google."));
-  };
-
-  // Якщо користувач АВТОРИЗОВАНИЙ (профіль)
-  if (user) {
-    return (
-      <section className="page-section active-section">
-        <h2>Мій профіль</h2>
-        <div className="stats-card" style={{ maxWidth: '450px', margin: '0 auto', textAlign: 'center' }}>
-          <UserAvatar user={user} />
-          <h3>Привіт, {user.displayName || user.email.split('@')[0]}!</h3>
-          <p style={{ color: '#8b949e' }}>Тепер ти можеш оцінювати ігри та реєструвати команди.</p>
-          <button onClick={handleLogout} style={{ backgroundColor: '#da3633', marginTop: '20px' }}>Вийти з акаунту</button>
-        </div>
-      </section>
-    );
-  }
-
-  // Якщо користувач ГІСТЬ (форма входу/реєстрації)
   return (
     <section className="page-section active-section">
-      <div className="modal-content" style={{ maxWidth: '400px', margin: '40px auto', display: 'block' }}>
-        
-        {/* Динамічний заголовок */}
-        <h2 style={{ textAlign: 'center', border: 'none', marginBottom: '20px' }}>
-          {isLoginMode ? 'Вхід до системи' : 'Створення акаунту'}
-        </h2>
-        
-        <button onClick={handleGoogleLogin} className="google-btn" style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-          {isLoginMode ? 'Увійти через Google' : 'Зареєструватися через Google'}
-        </button>
-
-        <div style={{ display: 'flex', alignItems: 'center', margin: '20px 0' }}>
-          <div style={{ flex: 1, height: '1px', backgroundColor: '#30363d' }}></div>
-          <span style={{ margin: '0 10px', color: '#8b949e', fontSize: '12px' }}>АБО ПОШТОЮ</span>
-          <div style={{ flex: 1, height: '1px', backgroundColor: '#30363d' }}></div>
-        </div>
-
-        {/* Блок з помилкою (з'являється тільки якщо errorMsg не пустий) */}
-        {errorMsg && (
-          <div className="error-box">
-            {errorMsg}
+      {toast && (
+        <div className="toast-container">
+          <div className={`toast-item ${toast.type}`}>
+            <span>{toast.message}</span>
+            <span className="toast-close-btn" onClick={() => setToast(null)}>&times;</span>
           </div>
-        )}
-
-        <div className="form-group">
-          <label>Email:</label>
-          <input type="email" placeholder="gamer@example.com" value={email} onChange={(e) => setEmail(e.target.value)} />
         </div>
-        
-        <div className="form-group" style={{ marginBottom: '20px' }}>
-          <label>Пароль:</label>
-          <input type="password" placeholder="Мінімум 6 символів" value={password} onChange={(e) => setPassword(e.target.value)} />
+      )}
+
+      <h2>Профіль гравця</h2>
+
+      {user ? (
+        <div className="profile-info">
+          {/* Генеруємо першу літеру імені або пошти */}
+          <div style={{ 
+            width: '80px', 
+            height: '80px', 
+            borderRadius: '50%', 
+            backgroundColor: '#58a6ff', 
+            color: '#0d1117', 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center', 
+            fontSize: '36px', 
+            fontWeight: 'bold', 
+            margin: '0 auto 15px',
+            textTransform: 'uppercase'
+          }}>
+            {(user.name || user.email).charAt(0)}
+          </div>
+          <h3>{user.name || user.email}</h3>
+          <p>Email: {user.email}</p>
+          <p>Статус: <span style={{ color: '#3fb950' }}>Авторизовано</span></p>
+          <button onClick={handleLogout} className="submit-btn" style={{ backgroundColor: '#da3633', marginTop: '20px' }}>
+            Вийти з акаунту
+          </button>
         </div>
+      ) : (
+        <form onSubmit={handleAuthAction} className="auth-form" style={{ maxWidth: '400px', margin: '0 auto' }}>
+          <h3>{isLoginMode ? 'Вхід в систему' : 'Реєстрація'}</h3>
+          
+          {!isLoginMode && (
+            <div className="form-group">
+              <label>Нікнейм:</label>
+              <input 
+                type="text" 
+                placeholder="Gamer2026" 
+                value={name}
+                onChange={(e) => setName(e.target.value)} 
+              />
+            </div>
+          )}
 
-        {/* Динамічна кнопка дії */}
-        <button onClick={handleAuthAction} className="submit-btn" style={{ width: '100%', backgroundColor: isLoginMode ? '#238636' : '#1f6feb', margin: 0 }}>
-          {isLoginMode ? 'Увійти' : 'Зареєструватися'}
-        </button>
+          <div className="form-group">
+            <label>Email:</label>
+            <input 
+              type="email" 
+              placeholder="gamer@example.com" 
+              value={email}
+              onChange={(e) => setEmail(e.target.value)} 
+            />
+          </div>
+          
+          <div className="form-group" style={{ marginBottom: '20px' }}>
+            <label>Пароль:</label>
+            <input 
+              type="password" 
+              placeholder="Мінімум 6 символів" 
+              value={password}
+              onChange={(e) => setPassword(e.target.value)} 
+            />
+          </div>
 
-        {/* Перемикач режимів */}
-        <p className="toggle-mode-text">
-          {isLoginMode ? "Ще немає профілю? " : "Вже є акаунт? "}
-          <span 
-            className="toggle-mode-link" 
-            onClick={() => {
-              setIsLoginMode(!isLoginMode); // Змінюємо режим
-              setErrorMsg(''); // Очищаємо помилки при перемиканні
-            }}
-          >
-            {isLoginMode ? 'Створити акаунт' : 'Увійти'}
-          </span>
-        </p>
-
-      </div>
+          <button type="submit" className="submit-btn" style={{ width: '100%' }}>
+            {isLoginMode ? 'Увійти' : 'Створити акаунт'}
+          </button>
+          
+          <p style={{ marginTop: '15px', textAlign: 'center', cursor: 'pointer', color: '#58a6ff' }} onClick={() => setIsLoginMode(!isLoginMode)}>
+            {isLoginMode ? 'Немає акаунту? Зареєструйтесь' : 'Вже є акаунт? Увійдіть'}
+          </p>
+        </form>
+      )}
     </section>
   );
 }
