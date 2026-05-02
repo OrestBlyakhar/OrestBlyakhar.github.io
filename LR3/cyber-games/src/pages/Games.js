@@ -16,7 +16,7 @@ const GameCard = ({ game, user, onGameUpdate, showToast }) => {
     try {
       const token = localStorage.getItem('token');
       // Відправляємо запит на сервер для збереження рейтингу
-      const response = await fetch(`http://localhost:5000/api/games/${game.id}/rate`, {
+      const response = await fetch(`/api/games/${game.id}/rate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -90,7 +90,7 @@ function Games() {
       const token = localStorage.getItem('token');
       
       // Робимо запит і передаємо токен у заголовках
-      const response = await fetch('http://localhost:5000/api/games', {
+      const response = await fetch('/api/games', {
         headers: {
           'Authorization': token ? `Bearer ${token}` : ''
         }

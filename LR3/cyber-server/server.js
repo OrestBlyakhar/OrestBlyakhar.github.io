@@ -172,4 +172,10 @@ app.post('/api/tournaments/:id/register', authenticate, async (req, res) => {
 });
 
 const PORT = process.env.PORT || 5000;
+
+// SPA fallback – усі невідомі маршрути повертають index.html
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
 app.listen(PORT, () => console.log(`Сервер працює на порту ${PORT}`));
